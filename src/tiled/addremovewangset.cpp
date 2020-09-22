@@ -31,16 +31,15 @@ using namespace Tiled;
 
 AddRemoveWangSet::AddRemoveWangSet(TilesetDocument *tilesetDocument,
                                    int index,
-                                   WangSet *wangSet)
+                                   std::unique_ptr<WangSet> wangSet)
     : mTilesetDocument(tilesetDocument)
     , mIndex(index)
-    , mWangSet(wangSet)
+    , mWangSet(std::move(wangSet))
 {
 }
 
 AddRemoveWangSet::~AddRemoveWangSet()
 {
-    delete mWangSet;
 }
 
 void AddRemoveWangSet::removeWangSet()
@@ -52,14 +51,13 @@ void AddRemoveWangSet::removeWangSet()
 void AddRemoveWangSet::addWangSet()
 {
     Q_ASSERT(mWangSet);
-    mTilesetDocument->wangSetModel()->insertWangSet(mIndex, mWangSet);
-    mWangSet = nullptr;
+    mTilesetDocument->wangSetModel()->insertWangSet(mIndex, std::move(mWangSet));
 }
 
-AddWangSet::AddWangSet(TilesetDocument *tilesetDocument, WangSet *wangSet)
+AddWangSet::AddWangSet(TilesetDocument *tilesetDocument, std::unique_ptr<WangSet> wangSet)
     : AddRemoveWangSet(tilesetDocument,
                        wangSet->tileset()->wangSetCount(),
-                       wangSet)
+                       std::move(wangSet))
 {
     setText(QCoreApplication::translate("Undo Commands", "Add Wang Set"));
 }
