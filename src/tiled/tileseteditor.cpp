@@ -924,13 +924,15 @@ void TilesetEditor::addWangSet()
     if (!tileset)
         return;
 
-    WangSet *wangSet = new WangSet(tileset, QString(), WangSet::Mixed, -1);
-    wangSet->setName(tr("New Wang Set"));
+    auto wangSet = std::make_unique<WangSet>(tileset,
+                                             tr("New Wang Set"),
+                                             WangSet::Mixed);
+    auto wangSetPtr = wangSet.get();
 
     mCurrentTilesetDocument->undoStack()->push(new AddWangSet(mCurrentTilesetDocument,
-                                                              wangSet));
+                                                              std::move(wangSet)));
 
-    mWangDock->editWangSetName(wangSet);
+    mWangDock->editWangSetName(wangSetPtr);
 }
 
 void TilesetEditor::duplicateWangSet()
@@ -943,13 +945,15 @@ void TilesetEditor::duplicateWangSet()
     if (!wangSet)
         return;
 
-    WangSet *duplicate = wangSet->clone(tileset);
+    std::unique_ptr<WangSet> duplicate { wangSet->clone(tileset) };
     duplicate->setName(QCoreApplication::translate("Tiled::MapDocument", "Copy of %1").arg(duplicate->name()));
 
-    mCurrentTilesetDocument->undoStack()->push(new AddWangSet(mCurrentTilesetDocument,
-                                                              duplicate));
+    auto duplicatePtr = duplicate.get();
 
-    mWangDock->editWangSetName(duplicate);
+    mCurrentTilesetDocument->undoStack()->push(new AddWangSet(mCurrentTilesetDocument,
+                                                              std::move(duplicate)));
+
+    mWangDock->editWangSetName(duplicatePtr);
 }
 
 void TilesetEditor::removeWangSet()
