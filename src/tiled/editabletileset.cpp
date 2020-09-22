@@ -170,7 +170,7 @@ EditableWangSet *EditableTileset::addWangSet(const QString &name, int type)
     EditableWangSet *editable = nullptr;
 
     if (auto doc = tilesetDocument()) {
-        push(new AddWangSet(doc, std::move(wangSet)));
+        push(new AddWangSet(doc, wangSet.release()));
         editable = EditableManager::instance().editableWangSet(this, tileset()->wangSets().last());
     } else if (!checkReadOnly()) {
         tileset()->addWangSet(std::move(wangSet));

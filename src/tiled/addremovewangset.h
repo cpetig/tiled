@@ -35,7 +35,7 @@ class AddRemoveWangSet : public QUndoCommand
 public:
     AddRemoveWangSet(TilesetDocument *tilesetDocument,
                      int index,
-                     std::unique_ptr<WangSet> wangSet);
+                     WangSet *wangSet);
     ~AddRemoveWangSet();
 
 protected:
@@ -51,7 +51,7 @@ private:
 class AddWangSet : public AddRemoveWangSet
 {
 public:
-    AddWangSet(TilesetDocument *tilesetDocument, std::unique_ptr<WangSet> wangSet);
+    AddWangSet(TilesetDocument *tilesetDocument, WangSet *wangSet);
 
     void undo() override { removeWangSet(); }
     void redo() override { addWangSet(); }
