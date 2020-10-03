@@ -226,6 +226,11 @@ public:
     LoadingStatus status() const;
     LoadingStatus imageStatus() const;
 
+    void setCanRotate(bool on_off);
+    void setAlternateRotation(bool on_off);
+    bool canRotate() const;
+    bool alternateRotation() const;
+
     void swap(Tileset &other);
 
     SharedTileset clone() const;
@@ -274,6 +279,8 @@ private:
     LoadingStatus mStatus;
     QColor mBackgroundColor;
     QPointer<TilesetFormat> mFormat;
+    bool mCanRotate;
+    bool mAlternateRotation;
 
     QWeakPointer<Tileset> mWeakPointer;
     QWeakPointer<Tileset> mOriginalTileset;
@@ -682,6 +689,30 @@ inline LoadingStatus Tileset::status() const
 inline LoadingStatus Tileset::imageStatus() const
 {
     return mImageReference.status;
+}
+
+/**
+ * Sets whether the tiles can rotate as needed to cover missing terrain/wang tiles
+ */
+inline void Tileset::setCanRotate(bool on_off)
+{
+    mCanRotate = on_off;
+}
+inline bool Tileset::canRotate() const
+{
+    return mCanRotate;
+}
+
+/**
+ * Sets whether the tiles will rotate/flip randomly to add more variation to the map
+ */
+inline void Tileset::setAlternateRotation(bool on_off)
+{
+    mAlternateRotation = on_off;
+}
+inline bool Tileset::alternateRotation() const
+{
+    return mAlternateRotation;
 }
 
 } // namespace Tiled
