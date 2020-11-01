@@ -391,6 +391,8 @@ SharedTileset MapReaderPrivate::readTileset()
                                       tileSpacing, margin);
 
             tileset->setColumnCount(columns);
+            tileset->setCanRotate(atts.value(QLatin1String("canrotate")).toInt());
+            tileset->setAlternateRotation(atts.value(QLatin1String("alternaterotation")).toInt());
 
             if (QColor::isValidColor(backgroundColor))
                 tileset->setBackgroundColor(QColor(backgroundColor));
@@ -811,6 +813,9 @@ void MapReaderPrivate::readTilesetWangSets(Tileset &tileset)
                 wangSet->setType(WangSet::Edge);
             if (edgeColors.isEmpty() && !cornerColors.isEmpty())
                 wangSet->setType(WangSet::Corner);
+
+            if (tileset.alternateRotation() || tileset.canRotate())
+                wangSet->addRotations(tileset.alternateRotation());
 
             tileset.addWangSet(std::move(wangSet));
         } else {
