@@ -933,4 +933,29 @@ Tileset::Orientation Tileset::orientationFromString(const QString &string)
     return orientation;
 }
 
+/**
+ * Sets whether the tiles can rotate as needed to cover missing terrain/wang tiles
+ */
+void Tileset::setCanRotate(bool on_off)
+{
+    mCanRotate = on_off;
+    for (auto i:wangSets()) {
+        if (mCanRotate)
+            i->addRotations(mAlternateRotation);
+        else
+            i->clearRotations();
+    }
+}
+
+void Tileset::setAlternateRotation(bool on_off)
+{
+    mAlternateRotation = on_off;
+    if (mCanRotate) {
+        for (auto i:wangSets()) {
+            i->clearRotations();
+            i->addRotations(mAlternateRotation);
+        }
+    }
+}
+
 } // namespace Tiled

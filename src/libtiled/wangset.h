@@ -309,6 +309,8 @@ public:
     void addCell(const Cell &cell, WangId wangId);
     void addWangTile(const WangTile &wangTile);
     void addRotations(bool alternate);
+    void clearRotations();
+    void updateRotations(WangTile const& tile, bool alternate);
 
     const QMultiHash<WangId, WangTile> &wangTilesByWangId() const { return mWangIdToWangTile; }
 
@@ -343,6 +345,8 @@ private:
     void removeWangTile(const WangTile &wangTile);
 
     void recalculateColorDistances();
+    // check which rotations should be added to the set
+    void checkRotations(bool alternate, const WangTile &i, QList<WangTile> &to_add, QSet<WangId> &already_added);
 
     Tileset *mTileset;
     QString mName;

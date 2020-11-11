@@ -690,24 +690,16 @@ inline LoadingStatus Tileset::imageStatus() const
 }
 
 /**
- * Sets whether the tiles can rotate as needed to cover missing terrain/wang tiles
+ * Whether the tiles can rotate as needed to cover missing terrain/wang tiles
  */
-inline void Tileset::setCanRotate(bool on_off)
-{
-    mCanRotate = on_off;
-}
 inline bool Tileset::canRotate() const
 {
     return mCanRotate;
 }
 
 /**
- * Sets whether the tiles will rotate/flip randomly to add more variation to the map
+ * Whether the tiles will rotate/flip randomly to add more variation to the map
  */
-inline void Tileset::setAlternateRotation(bool on_off)
-{
-    mAlternateRotation = on_off;
-}
 inline bool Tileset::alternateRotation() const
 {
     return mAlternateRotation;
